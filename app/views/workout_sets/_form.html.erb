@@ -1,0 +1,54 @@
+
+<script>
+  var exerciseLinks = <%= Hash[Exercise.all.map{|ex| [ex.id, ex.link]}].to_json.html_safe%>;
+</script>
+
+
+
+<%= form_for @set, html: {style:"margin-top: 40px"} do |f| %>
+
+  <%= hidden_field :workout, :id %>
+  <div class="form-group">
+    <%= f.label :exercise_id, 'Exercise' %>
+    <%= f.select :exercise_id, grouped_options_for_select(Exercise.grouped_by_muscle_group.sort_by{|k,v| k}, @set.exercise_id), {},
+                 { onChange: 'javascript: $("#exerciseLink").attr("href", ( exerciseLinks[$("#workout_set_exercise_id").val()] ) )',
+                   class: 'form-control' } %>
+    <a href="#" id="exerciseLink" target='_new' style="disply: inline-block" class="pull-right btn">Link</a>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :reps, 'Weights' %>
+    <%= f.text_field :weights, class: 'form-control', value: @set&.weights&.map{|w| (w.to_i == w.to_f) ? w.to_i : w.to_f}, tabIndex: 1  %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :reps, 'Reps' %>
+    <%= f.text_field :reps, class: 'form-control', tabIndex: 2 %>
+  </div>  
+
+  <div class="form-group">
+    <%= f.label :notes, 'Notes' %>
+    <%= f.text_area :notes, class: 'form-control', tabIndex: 3 %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :warmup, 'Warmup?' do %>
+      Warmup? <%= f.check_box :warmup, tabIndex: 5, checked: @previous_set.nil? %>
+    <% end %>
+  </div>
+
+  <%= f.submit 'Add', tabIndex: 4 %>
+  
+<% end %>
+
+<% unless @workout %>
+<div class="row">
+  <div class="col-xs-6 pull-right">
+    <%= link_to 'Delete', workout_set_path(@set), method: :delete, data: {confirm: 'Are you sure?'} if @set.id %>
+  </div>
+</div>
+<% end %>
+
+<script>
+  $("#exerciseLink").attr("href", ( exerciseLinks[$("#workout_set_exercise_id").val()] ) );
+</script>

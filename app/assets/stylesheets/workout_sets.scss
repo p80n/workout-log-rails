@@ -1,0 +1,14 @@
+// Place all the styles related to the workout_sets controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.previous-set td {
+  border-top-style: none !important;
+  padding-top: 0 !important; }
+
+
+.previous-set td div {
+  color: gray;
+  font-style: italic;
+  font-size: x-small;
+}

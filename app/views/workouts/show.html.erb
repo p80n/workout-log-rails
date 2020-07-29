@@ -1,0 +1,36 @@
+
+  <div class="col-xs-3 pull-left">
+    <div class="row" style="margin-top: -20px">
+      <%= render partial: 'workout_sets/form' %>
+    </div>
+    <div class="row" style="margin-top: 40px">
+      <%= render 'timer' %>
+    </div>
+  </div>
+
+  <div class="col-xs-1"></div>
+
+  <div class="col-xs-4 pull-left">
+    <div class="row" style="margin-top: 10px">
+      <%= render 'sets' %>
+    </div>
+  </div>
+
+
+  <div class="col-xs-2 pull-right">
+    <div class="row">
+      <%= @workout.total_weight.round %>/<%= @previous_workout&.total_weight&.round %> lbs
+    </div>
+    <div class="row">
+      <%= @workout.sets&.count %>/<%= @previous_workout&.sets&.count %> sets
+    </div>
+    <div class="row">
+      <%= @workout.rate.round(2) %> / <%= @previous_workout&.rate&.round(2) %> reps/minute
+    </div>
+    <div class="row">
+      <%= @workout.intensity.round(2) %> / <%= @previous_workout&.intensity&.round(2) %> lbs/rep
+    </div>
+    <div class="row">
+      <%= format_seconds(@workout.duration) %> / <%= format_seconds(@previous_workout&.duration) %>
+    </div>
+  </div>

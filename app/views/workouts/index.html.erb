@@ -1,0 +1,32 @@
+
+<br>
+<%= link_to 'New', url_for(controller: 'workouts', action: 'create'), method: :post, style: 'font-size: x-large' %>
+
+<br><br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Time Since Last Worked</th>
+      <th>Muscle Groups</th>
+      <th>Total Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+<% @workouts.sort_by{|k,v| v.id}.each do |muscle_group,workout| %>
+    <tr>
+      <td>
+        <%= link_to time_ago_in_words(workout.created_at), workout_path(workout) %>
+      </td>
+      <td>
+        <%= muscle_group.name %><%= raw("<span style='font-style: italic'>, #{(workout.muscle_groups.map(&:name) - [muscle_group.name]).join(', ')}</span>") if workout.muscle_groups.size > 1 %>
+      </td>
+      <td>
+        <% totals = workout.muscle_groups.collect{|mg| workout.total_weight_per_group[mg].round} %>
+        <%= totals.join(', ') %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+

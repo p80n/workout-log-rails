@@ -1,0 +1,38 @@
+
+<%= form_for @exercise do |f| %>
+
+  <div class="form-group">
+    <%= f.label :link %>
+    <%= f.text_field :link, class: 'col-xs-6 form-control', tabindex: 1 %>
+  </div>
+
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control col-xs-6' %>
+  </div>
+
+
+  <div class="form-group">
+    <%= f.label :target_muscle %>
+    <%= f.select :muscle_id, Muscle.order(:name).collect{|m|[m.name, m.id]}, {}, class: 'cols-xs-6 form-control' %>
+  </div>
+
+
+  <div class="form-group">
+    <%= f.label :equipment %>
+    <%= f.select :equipment_id, Equipment.order(:name).collect{|e|[e.name,e.id]}, { include_blank: true }, class: 'col-xs-6 form-control' %>
+  </div>
+
+
+  <div class="form-group">
+    <%= f.label :multiplier %>
+    <%= f.text_field :multiplier, class: 'col-xs-6 form-control' %>
+  </div>
+
+
+  <br>
+  <br>
+  
+  <%= f.submit class: 'pull-right' %>
+<% end %>

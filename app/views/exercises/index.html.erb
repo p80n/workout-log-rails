@@ -1,0 +1,27 @@
+<h3>Exercises</h3>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-4">
+    <%= render 'form' %>
+  </div>
+</div>
+
+<br><Br>
+
+<% @exercises.sort_by{|e| [e.muscle.name, e.title]}.each do |exercise| %>
+
+<div class="row" style="line-height: 30px">
+  <div class="col-xs-3"><%= link_to "#{exercise.equipment&.name&.titleize} #{exercise.name}", edit_exercise_path(exercise) %></div>
+  <div class="col-xs-1"><%= exercise.muscle.name %></div>
+  <div class="col-xs-1"><%= exercise.multiplier %></div>
+  <div class="colx-xs-1">
+
+    <%= link_to '<span class="glyphicon glyphicon-remove"></span>'.html_safe, exercise_path(exercise), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn' %>
+
+    
+  </div>
+</div>
+
+<% end %>

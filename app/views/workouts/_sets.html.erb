@@ -1,0 +1,44 @@
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th>Weight</th>
+      <th>Reps</th>
+      <th>Total Weight</th>
+    </tr>
+  </thead>
+
+
+
+  <tbody>
+
+    <% 0.upto(@max_sets) do |i| %>
+      <% set = @combined[:current][i] if i < @workout.sets.size %>
+      <% if set %>
+      <tr>
+        <td><%= link_to set.exercise.title, edit_workout_set_path(set) %></td>
+        <td><%= set.weights&.map(&:round).join(', ') %></td>
+        <td><%= set.reps&.map(&:round).join(', ') %></td>
+        <td><%= set.total_weight&.round %></td>
+      </tr>
+      <% end %>
+      <% previous_set = @combined[:previous][i] if @previous_workout and i < @previous_workout.sets.size %>
+      <% if previous_set %>
+      <tr class="previous-set">
+        <td><div><%= previous_set.exercise.title %></div></td>
+        <td><div><%= previous_set.weights&.map(&:round).join(', ') %></div></td>
+        <td><div><%= previous_set.reps&.map(&:round).join(', ') %></div></td>
+        <td><div><%= previous_set.total_weight&.round %></div></td>
+        <%#= fa_icon "info-circle" unless previous_set.notes.blank? %></i>
+      </tr>
+      <tr class="previous-set">
+        <td></td>
+        <td style="column-span: all"><div><%= previous_set.notes %></div></td>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

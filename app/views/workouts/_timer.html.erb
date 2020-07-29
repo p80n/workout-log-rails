@@ -1,0 +1,92 @@
+<div id="timer">
+
+  <h3></h3>
+
+</div>
+
+<% if @set.created_at&.today? %>
+<script type="text/javascript">
+
+var english_voice;
+// list of languages is probably not loaded, wait for it
+if(window.speechSynthesis.getVoices().length == 0) {
+	window.speechSynthesis.addEventListener('voiceschanged', function() {
+		textToSpeech();
+	});
+}
+else {
+	// languages list available, no need to wait
+	textToSpeech()
+}
+
+function textToSpeech() {
+	// get all voices that browser offers
+	var available_voices = window.speechSynthesis.getVoices();
+
+  // find voice by language locale "en-US"
+	// if not then select the first voice
+	for(var i=0; i<available_voices.length; i++) {
+		if(available_voices[i].lang === 'en-US') {
+			english_voice = available_voices[i];
+			break;
+		}
+	}
+	if(english_voice === '')
+		english_voice = available_voices[0];
+
+}
+
+function say(words){
+  var utter = new SpeechSynthesisUtterance();
+	utter.rate = 1;
+  utter.pitch = 0.5;
+  utter.text = words;
+  utter.voice = english_voice;
+  window.speechSynthesis.speak(utter);
+}
+
+</script>
+
+
+
+<script type="text/javascript">
+  var muted = false;
+  var startTime = Date.parse("<%= @set.created_at.iso8601 %>");
+  var totalSeconds = 0;
+
+  $(document).keydown(function(e) {
+    if (e.which === 77){
+      muted = !muted; }
+  });
+
+  if (!isNaN(startTime)){
+    var timeString = "";
+
+    setInterval(function() {
+
+      totalSeconds = Math.floor((new Date - startTime) / 1000);
+      if ( totalSeconds > 600 ){
+        return; }
+
+      var minutes = Math.floor(totalSeconds / 60)
+      var seconds = totalSeconds % 60;
+      if ( totalSeconds > 60 ){
+        timeString = minutes + " minutes " + seconds + " seconds";
+        $("#timer h3").text(timeString);
+      }
+      else {
+        timeString = totalSeconds + " seconds";
+        $("#timer h3").text(timeString); }
+    }, 1000);
+
+    var talker = setInterval(function() {
+      if (totalSeconds > 600){ clearInterval(talker) }
+      if (! muted) {
+        var lastChar = timeString[timeString.length -1];
+        timeString = timeString + (lastChar === 's' ? ' have' : ' has') + ' passed'
+        say(timeString); }
+    }, 60000);
+
+  }
+</script>
+<% end %>

@@ -1,0 +1,40 @@
+
+<%= form_for @routine do |rf| %>
+
+  <div class="form-group">
+    <%= rf.label :name %>
+    <%= rf.text_field :name, class: 'form-control col-xs-6' %>
+  </div>
+
+  <div class="form-group">
+    <%= rf.label :link %>
+    <%= rf.text_field :link, class: 'col-xs-6 form-control', tabindex: 1 %>
+  </div>
+
+  <div class="form-group">
+    <%= rf.label :target_muscle_group %>
+    <%= rf.select :muscle_group_id, Muscle.order(:name).collect{|m|[m.name, m.id]}, {}, class: 'cols-xs-6 form-control' %>
+  </div>
+
+  <br>
+  <br>
+
+  <%= field_set_tag('Set List', class: 'form-group') do %>
+    <%= rf.fields_for :exercises do |ef| %>
+    <div class="form-group">
+      <%= ef.label :exercise %>
+      <%= ef.select :exercise_id, grouped_options_for_select(Exercise.grouped_by_muscle_group.sort_by{|k,v| k}), {},
+          { onChange: 'javascript: $("#exerciseLink").attr("href", ( exerciseLinks[$("#workout_set_exercise_id").val()] ) )',
+          class: 'form-control' } %>
+    </div>
+
+    <div class="form-group">
+      <%= ef.label :sets %><br>
+      <%= ef.text_field :sets %>
+    </div>
+
+    <% end %>
+  <% end %> <%# fieldset %>
+
+  <%= rf.submit class: 'pull-right' %>
+<% end %>
