@@ -7,7 +7,7 @@ end
 
 
 gem 'rails', '~> 5.0.2'
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.12'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 gem 'bootstrap-sass'
